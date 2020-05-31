@@ -14,6 +14,7 @@ package net.minecraftforge.fml.client.config;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.widget.button.Button;
 
 /**
  * This class provides a button that fixes several bugs present in the vanilla GuiButton drawing code.
@@ -25,7 +26,7 @@ import net.minecraft.client.gui.GuiButton;
  *
  * @author bspkrs
  */
-public class GuiButtonExt extends GuiButton
+public class GuiButtonExt extends Button
 {
     public GuiButtonExt(int id, int xPos, int yPos, String displayString)
     {

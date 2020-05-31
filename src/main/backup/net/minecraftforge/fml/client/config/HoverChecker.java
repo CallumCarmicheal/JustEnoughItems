@@ -12,7 +12,8 @@
 
 package net.minecraftforge.fml.client.config;
 
-import net.minecraft.client.gui.GuiButton;
+
+import net.minecraft.client.gui.widget.button.Button;
 
 /**
  * This class implements an easy way to check if the mouse has hovered within a certain region of the screen for a given 
@@ -22,9 +23,9 @@ import net.minecraft.client.gui.GuiButton;
  */
 public class HoverChecker
 {
-    private int       top, bottom, left, right, threshold;
-    private GuiButton button;
-    private long      hoverStart;
+    private int     top, bottom, left, right, threshold;
+    private Button  button;
+    private long    hoverStart;
     
     public HoverChecker(int top, int bottom, int left, int right, int threshold)
     {
@@ -36,7 +37,7 @@ public class HoverChecker
         this.hoverStart = -1;
     }
     
-    public HoverChecker(GuiButton button, int threshold)
+    public HoverChecker(Button button, int threshold)
     {
         this.button = button;
         this.threshold = threshold;
@@ -71,10 +72,10 @@ public class HoverChecker
     {
         if (this.button != null)
         {
-            this.top = button.yPosition;
-            this.bottom = button.yPosition + button.height;
-            this.left = button.xPosition;
-            this.right = button.xPosition + button.width;
+            this.top = button.y;
+            this.bottom = button.y + button.getHeight();
+            this.left = button.x;
+            this.right = button.x + button.getWidth();
             canHover = canHover && button.visible;
         }
         

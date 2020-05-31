@@ -20,11 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.fml.client.config.GuiConfigEntries.IConfigEntry;
+
+import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.PostConfigChangedEvent;
@@ -40,12 +40,12 @@ import org.lwjgl.input.Keyboard;
  *
  * @author bspkrs
  */
-public class GuiConfig extends GuiScreen
+public class GuiConfig extends Screen
 {
     /**
      * A reference to the screen object that created this. Used for navigating between screens.
      */
-    public final GuiScreen parentScreen;
+    public final Screen parentScreen;
     public String title = "Config GUI";
     public String titleLine2;
     public final List<IConfigElement> configElements;
@@ -85,7 +85,7 @@ public class GuiConfig extends GuiScreen
      * @param title the desired title for this screen. For consistency it is recommended that you pass the path of the config file being
      *            edited.
      */
-    public GuiConfig(GuiScreen parentScreen, List<IConfigElement> configElements, String modID, String configID,
+    public GuiConfig(Screen parentScreen, List<IConfigElement> configElements, String modID, String configID,
             boolean allRequireWorldRestart, boolean allRequireMcRestart, String title)
     {
         this(parentScreen, configElements, modID, configID, allRequireWorldRestart, allRequireMcRestart, title, null);
@@ -103,7 +103,7 @@ public class GuiConfig extends GuiScreen
      * @param title the desired title for this screen. For consistency it is recommended that you pass the path of the config file being
      *            edited.
      */
-    public GuiConfig(GuiScreen parentScreen, List<IConfigElement> configElements, String modID,
+    public GuiConfig(Screen parentScreen, List<IConfigElement> configElements, String modID,
             boolean allRequireWorldRestart, boolean allRequireMcRestart, String title)
     {
         this(parentScreen, configElements, modID, null, allRequireWorldRestart, allRequireMcRestart, title, null);
@@ -123,7 +123,7 @@ public class GuiConfig extends GuiScreen
      * @param titleLine2 the desired title second line for this screen. Typically this is used to send the category name of the category
      *            currently being edited.
      */
-    public GuiConfig(GuiScreen parentScreen, List<IConfigElement> configElements, String modID,
+    public GuiConfig(Screen parentScreen, List<IConfigElement> configElements, String modID,
             boolean allRequireWorldRestart, boolean allRequireMcRestart, String title, String titleLine2)
     {
         this(parentScreen, configElements, modID, null, allRequireWorldRestart, allRequireMcRestart, title, titleLine2);
@@ -146,10 +146,10 @@ public class GuiConfig extends GuiScreen
      * @param titleLine2 the desired title second line for this screen. Typically this is used to send the category name of the category
      *            currently being edited.
      */
-    public GuiConfig(GuiScreen parentScreen, List<IConfigElement> configElements, String modID, String configID,
+    public GuiConfig(Screen parentScreen, List<IConfigElement> configElements, String modID, String configID,
             boolean allRequireWorldRestart, boolean allRequireMcRestart, String title, String titleLine2)
     {
-        this.mc = Minecraft.getMinecraft();
+        this.mc = Minecraft.getInstance();
         this.parentScreen = parentScreen;
         this.configElements = configElements;
         this.entryList = new GuiConfigEntries(this, mc);
@@ -168,7 +168,7 @@ public class GuiConfig extends GuiScreen
 
     public static String getAbridgedConfigPath(String path)
     {
-        Minecraft mc = Minecraft.getMinecraft();
+        Minecraft mc = Minecraft.getInstance();
         if (mc.mcDataDir.getAbsolutePath().endsWith("."))
             return path.replace("\\", "/").replace(mc.mcDataDir.getAbsolutePath().replace("\\", "/").substring(0, mc.mcDataDir.getAbsolutePath().length() - 1), "/.minecraft/");
         else
