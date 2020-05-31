@@ -30,3 +30,6 @@ changelog.html
 *.launch
 /**/build/
 /**/logs
+
+# IDE Gitignores
+.vscode
