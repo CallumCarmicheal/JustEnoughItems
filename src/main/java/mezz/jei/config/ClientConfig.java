@@ -34,7 +34,6 @@ public final class ClientConfig {
 
 	private final ConfigValues defaultValues = new ConfigValues();
 	private final ConfigValues values = new ConfigValues();
-	private File jeiConfigurationDir = null;
 
 	//@Deprecated
 	public static ClientConfig getInstance() {
@@ -44,7 +43,6 @@ public final class ClientConfig {
 
 	public ClientConfig(File jeiConfigurationDir) {
 		instance = this;
-		this.jeiConfigurationDir = jeiConfigurationDir;
 
 		final File configFile = new File(jeiConfigurationDir, "jei.cfg");
 		final File searchColorsConfigFile = new File(jeiConfigurationDir, "searchColors.cfg");
@@ -95,6 +93,10 @@ public final class ClientConfig {
 	}
 
 	private boolean syncConfig() {
+		return syncConfig(false);
+	}
+
+	private boolean syncConfig(boolean isReload) {
 		boolean needsReload = false;
 
 		config.addCategory(CATEGORY_ADVANCED);
@@ -108,11 +110,14 @@ public final class ClientConfig {
 			values.debugModeEnabled = property.getBoolean();
 		}
 
-		final boolean configChanged = config.hasChanged();
-		if (configChanged) {
-			// TODO 1.13
-			// CRC - TODO: Re-enabled save
-			config.save();
+		if (!isReload) {
+			final boolean configChanged = config.hasChanged();
+			if (configChanged) {
+				// TODO 1.13
+				// CRC - TODO: Re-enabled save
+				config.save();
+			}
+
 		}
 
 		return needsReload;
@@ -139,6 +144,7 @@ public final class ClientConfig {
 				}
 			}
 		}
+
 		final ColorNamer colorNamer = new ColorNamer(searchColorsMapBuilder.build());
 		Internal.setColorNamer(colorNamer);
 
@@ -148,6 +154,7 @@ public final class ClientConfig {
 			// CRC TODO: Re-enabled config save
 			searchColorsConfig.save();
 		}
+
 		return configChanged;
 	}
 
@@ -165,6 +172,8 @@ public final class ClientConfig {
 		
 		// Reload the config
 		this.config.load();
-		return this.syncConfig();
+		boolean status = this.syncConfig(true);
+
+		return status;
 	}
 }
