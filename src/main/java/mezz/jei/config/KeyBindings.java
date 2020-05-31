@@ -27,6 +27,7 @@ public final class KeyBindings {
 	public static final KeyBinding nextPage;
 	public static final KeyBinding bookmark;
 	public static final KeyBinding toggleBookmarkOverlay;
+	public static final KeyBinding reloadConfig;
 	private static final List<KeyBinding> allBindings;
 
 	static InputMappings.Input getKey(int key) {
@@ -45,7 +46,8 @@ public final class KeyBindings {
 			previousPage = new KeyBinding("key.jei.previousPage", KeyConflictContext.GUI, getKey(GLFW.GLFW_KEY_PAGE_UP), categoryName),
 			nextPage = new KeyBinding("key.jei.nextPage", KeyConflictContext.GUI, getKey(GLFW.GLFW_KEY_PAGE_DOWN), categoryName),
 			bookmark = new KeyBinding("key.jei.bookmark", KeyConflictContext.GUI, getKey(GLFW.GLFW_KEY_A), categoryName),
-			toggleBookmarkOverlay = new KeyBinding("key.jei.toggleBookmarkOverlay", KeyConflictContext.GUI, getKey(GLFW.GLFW_KEY_UNKNOWN), categoryName)
+			toggleBookmarkOverlay = new KeyBinding("key.jei.toggleBookmarkOverlay", KeyConflictContext.GUI, getKey(GLFW.GLFW_KEY_UNKNOWN), categoryName),
+			reloadConfig = new KeyBinding("key.jei.crc.reloadConfig", KeyConflictContext.UNIVERSAL, getKey(GLFW.GLFW_KEY_UNKNOWN), categoryName)
 		);
 	}
 

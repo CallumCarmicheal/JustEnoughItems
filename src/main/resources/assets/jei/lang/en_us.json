@@ -48,6 +48,7 @@
   "key.jei.nextPage": "Show Next Page",
   "key.jei.bookmark": "Add/Remove a Bookmarked Ingredient",
   "key.jei.toggleBookmarkOverlay": "Show/Hide Bookmarked Ingredients",
+  "key.jei.crc.reloadConfig": "CRC: Reload JEI Config",
 
   "_comment": "Config",
   "config.jei.default": "Default",

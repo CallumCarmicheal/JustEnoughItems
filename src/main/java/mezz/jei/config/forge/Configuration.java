@@ -30,7 +30,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PushbackInputStream;
 import java.io.Reader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -41,6 +43,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static mezz.jei.config.forge.Property.Type.*;
+
+import net.minecraftforge.fml.loading.FMLConfig;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 import com.google.common.base.CharMatcher;
@@ -101,27 +105,26 @@ public class Configuration
 
     /**
      * Create a configuration file for the file given in parameter with the provided config version number.
-     * /
+     */
     private void runConfiguration(File file, String configVersion)
     {
         this.file = file;
         this.definedConfigVersion = configVersion;
-        String basePath = ((File)(FMLInjectionData.data()[6])).getAbsolutePath().replace(File.separatorChar, '/').replace("/.", "");
+        
+        java.nio.file.Path configFolder = FMLPaths.GAMEDIR.get().resolve(FMLConfig.defaultConfigPath());
+
+        
+        String basePath = configFolder.toAbsolutePath().toString().replace(File.separatorChar, '/').replace("/.", "");
         String path = file.getAbsolutePath().replace(File.separatorChar, '/').replace("/./", "/").replace(basePath, "");
-        if (PARENT != null)
-        {
+        if (PARENT != null) {
             PARENT.setChild(path, this);
             isChild = true;
-        }
-        else
-        {
+        } else {
             fileName = path;
-            try
-            {
+            try {
                 load();
             }
-            catch (Throwable e)
-            {
+            catch (Throwable e) {
                 File fileBak = new File(file.getAbsolutePath() + "_" +
                         new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".errored");
                 LOGGER.fatal("An exception occurred while loading config file {}. This file will be renamed to {} " +
@@ -132,16 +135,16 @@ public class Configuration
             }
         }
     }
-*/
+
     public Configuration(File file, String configVersion)
     {
-//        runConfiguration(file, configVersion);
+        runConfiguration(file, configVersion);
     }
 
     public Configuration(File file, String configVersion, boolean caseSensitiveCustomCategories)
     {
         this.caseSensitiveCustomCategories = caseSensitiveCustomCategories;
-//        runConfiguration(file, configVersion);
+        runConfiguration(file, configVersion);
     }
 
     public Configuration(File file, boolean caseSensitiveCustomCategories)
@@ -1050,7 +1053,12 @@ public class Configuration
         resetChangedState();
     }
 
-    public void save()
+    public boolean fileExists() 
+    {
+        return file.exists();
+    }
+
+    public void save() 
     {
         if (PARENT != null && PARENT != this)
         {

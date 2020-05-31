@@ -19,6 +19,7 @@ import mezz.jei.api.ingredients.IIngredientHelper;
 import mezz.jei.api.recipe.IFocus;
 import mezz.jei.api.runtime.IIngredientManager;
 import mezz.jei.bookmarks.BookmarkList;
+import mezz.jei.config.ClientConfig;
 import mezz.jei.config.IEditModeConfig;
 import mezz.jei.config.IWorldConfig;
 import mezz.jei.config.IngredientBlacklistType;
@@ -277,6 +278,12 @@ public class InputHandler {
 			worldConfig.toggleBookmarkEnabled();
 			return false;
 		}
+
+		if (KeyBindings.reloadConfig.isActiveAndMatches(input)) {
+			ClientConfig.getInstance().reloadConfig(true);
+			return false;
+		}
+
 		return ingredientListOverlay.onGlobalKeyPressed(input);
 	}
 

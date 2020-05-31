@@ -98,9 +98,16 @@ public class Ingredients implements IIngredients {
 		Map<IIngredientType, List> inputIngredients = new IdentityHashMap<>();
 		for (Map.Entry<IIngredientType, List<List>> entry : inputs.entrySet()) {
 			IIngredientType ingredientType = entry.getKey();
-			List<Object> flatIngredients = entry.getValue().stream()
-				.flatMap(Collection::stream)
-				.collect(Collectors.toList());
+
+
+			java.util.stream.Stream<List> stream = entry.getValue().stream();
+			java.util.stream.Stream<Object> flatMap = stream.flatMap(Collection::stream);
+			List<Object> flatIngredients = flatMap.collect(Collectors.toList());
+
+			// List<Object> flatIngredients = entry.getValue().stream()
+			// 	.flatMap(Collection::stream)
+			// 	.collect(Collectors.toList());
+			
 			inputIngredients.put(ingredientType, flatIngredients);
 		}
 		return inputIngredients;
@@ -110,11 +117,19 @@ public class Ingredients implements IIngredients {
 		Map<IIngredientType, List> outputIngredients = new IdentityHashMap<>();
 		for (Map.Entry<IIngredientType, List<List>> entry : outputs.entrySet()) {
 			IIngredientType ingredientType = entry.getKey();
-			List<Object> flatIngredients = entry.getValue().stream()
-				.flatMap(Collection::stream)
-				.collect(Collectors.toList());
+
+			java.util.stream.Stream<List> stream = entry.getValue().stream();
+			java.util.stream.Stream<Object> flatMap = stream.flatMap(Collection::stream);
+			List<Object> flatIngredients = flatMap.collect(Collectors.toList());
+
+
+			// List<Object> flatIngredients = entry.getValue().stream()
+			// 	.flatMap(Collection::stream)
+			// 	.collect(Collectors.toList());
+
 			outputIngredients.put(ingredientType, flatIngredients);
 		}
+		
 		return outputIngredients;
 	}
 }

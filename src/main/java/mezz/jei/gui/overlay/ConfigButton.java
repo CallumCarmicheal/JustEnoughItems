@@ -9,6 +9,7 @@ import net.minecraft.util.text.TextFormatting;
 
 import mezz.jei.Internal;
 import mezz.jei.api.gui.drawable.IDrawable;
+import mezz.jei.config.ClientConfig;
 import mezz.jei.config.IWorldConfig;
 import mezz.jei.config.KeyBindings;
 import mezz.jei.gui.elements.GuiIconToggleButton;
@@ -66,7 +67,10 @@ public class ConfigButton extends GuiIconToggleButton {
 			} else {
 				Minecraft minecraft = Minecraft.getInstance();
 				if (minecraft.currentScreen != null) {
-//					Screen configScreen = new JEIModConfigGui(minecraft.currentScreen);
+					// Reload the config instead
+					ClientConfig.getInstance().reloadConfig();
+
+					//					Screen configScreen = new JEIModConfigGui(minecraft.currentScreen);
 //					parent.updateScreen(configScreen, false);
 //					minecraft.displayGuiScreen(configScreen);
 				}

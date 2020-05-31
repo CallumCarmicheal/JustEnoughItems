@@ -10,6 +10,8 @@ import mezz.jei.color.ColorGetter;
 import mezz.jei.color.ColorNamer;
 import mezz.jei.config.forge.Property;
 import mezz.jei.util.GiveMode;
+import net.minecraft.client.Minecraft;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,8 +34,9 @@ public final class ClientConfig {
 
 	private final ConfigValues defaultValues = new ConfigValues();
 	private final ConfigValues values = new ConfigValues();
+	private File jeiConfigurationDir = null;
 
-	@Deprecated
+	//@Deprecated
 	public static ClientConfig getInstance() {
 		Preconditions.checkNotNull(instance);
 		return instance;
@@ -41,6 +44,8 @@ public final class ClientConfig {
 
 	public ClientConfig(File jeiConfigurationDir) {
 		instance = this;
+		this.jeiConfigurationDir = jeiConfigurationDir;
+
 		final File configFile = new File(jeiConfigurationDir, "jei.cfg");
 		final File searchColorsConfigFile = new File(jeiConfigurationDir, "searchColors.cfg");
 		this.config = new LocalizedConfiguration(configKeyPrefix, configFile, "0.4.0");
@@ -93,15 +98,10 @@ public final class ClientConfig {
 		boolean needsReload = false;
 
 		config.addCategory(CATEGORY_ADVANCED);
-
 		values.centerSearchBarEnabled = config.getBoolean(CATEGORY_ADVANCED, "centerSearchBarEnabled", defaultValues.centerSearchBarEnabled);
-
 		values.giveMode = config.getEnum("giveMode", CATEGORY_ADVANCED, defaultValues.giveMode, GiveMode.values());
-
 		values.maxColumns = config.getInt("maxColumns", CATEGORY_ADVANCED, defaultValues.maxColumns, smallestNumColumns, largestNumColumns);
-
 		values.maxRecipeGuiHeight = config.getInt("maxRecipeGuiHeight", CATEGORY_ADVANCED, defaultValues.maxRecipeGuiHeight, minRecipeGuiHeight, maxRecipeGuiHeight);
-
 		{
 			Property property = config.get(CATEGORY_ADVANCED, "debugModeEnabled", defaultValues.debugModeEnabled);
 			property.setShowInGui(false);
@@ -111,8 +111,10 @@ public final class ClientConfig {
 		final boolean configChanged = config.hasChanged();
 		if (configChanged) {
 			// TODO 1.13
-//			config.save();
+			// CRC - TODO: Re-enabled save
+			config.save();
 		}
+
 		return needsReload;
 	}
 
@@ -143,8 +145,26 @@ public final class ClientConfig {
 		final boolean configChanged = searchColorsConfig.hasChanged();
 		if (configChanged) {
 			// TODO 1.13
-//			searchColorsConfig.save();
+			// CRC TODO: Re-enabled config save
+			searchColorsConfig.save();
 		}
 		return configChanged;
+	}
+
+	public boolean reloadConfig() {
+		return this.reloadConfig(false);
+	}
+
+	public boolean reloadConfig(boolean displayMessage) {
+		// CRC TODO: Display chat message saying the config has been reloaded
+		if (displayMessage) {
+			Minecraft.getInstance().player.sendChatMessage("Reloaded JEI Configuration");
+		}
+
+		LOGGER.debug("JEI, Reloaded config!");
+		
+		// Reload the config
+		this.config.load();
+		return this.syncConfig();
 	}
 }
